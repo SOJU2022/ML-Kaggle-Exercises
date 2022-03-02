@@ -25,7 +25,6 @@ def plotData(X, y):
 
 
 plotData(Age, Cost)
-# plt.show()
 
 
 """
@@ -36,8 +35,6 @@ Perform LR Analysis
 def computeCost(X, y, theta):
     h = np.dot(X, theta) # initial cost predictions using theta
     J = (1/(2*m)) * np.sum(np.square(h - y))
-
-    print(h)
 
     return J 
 
@@ -60,15 +57,12 @@ def gradientDescent(X, y, theta, alpha, num_iters):
 
 theta, J_history = gradientDescent(Age_stack, Cost, theta=np.array([0, 0]), alpha=0.0001, num_iters=100)
 
-print(J_history)
-print(theta)
-
 # check if J is decreasing over period of iterations
 size_J = len(J_history)
 iters = np.linspace(0, 10, size_J)
 fig = plt.figure()
 plt.plot(iters, J_history)
-plt.show()
+
 
 """
 Use plotData function to add linear regression
@@ -77,8 +71,6 @@ Use plotData function to add linear regression
 plotData(Age, Cost)
 plt.plot(Age, np.dot(Age_stack, theta), 'b-')
 plt.legend(["Training Data", "Linear Regression"])
-plt.show()
-
 
 
 
@@ -86,31 +78,30 @@ plt.show()
 Check correctness of J value 
 """
 # 2-dim basegrid for J
-# theta0_vals = np.linspace(-10, 10, 100)
-# theta1_vals = np.linspace(-10, 10, 100)
+theta0_vals = np.linspace(-10, 10, 100)
+theta1_vals = np.linspace(-10, 10, 100)
 
-# J_vals = np.zeros((theta0_vals.shape[0], theta1_vals.shape[0]))
+J_vals = np.zeros((theta0_vals.shape[0], theta1_vals.shape[0]))
 
-# for i, theta0 in enumerate(theta0_vals): # retrieve index + theta0 value
-#     for j, theta1 in enumerate(theta1_vals):
-#         J_vals[i,j] = computeCost(Age_stack, Cost, theta=[theta0, theta1])
+for i, theta0 in enumerate(theta0_vals): # retrieve index + theta0 value
+    for j, theta1 in enumerate(theta1_vals):
+        J_vals[i,j] = computeCost(Age_stack, Cost, theta=[theta0, theta1])
 
-# J_vals = J_vals.T
+J_vals = J_vals.T
 
-# # surface plot
-# fig = plt.figure(figsize=(12, 5))
-# ax = fig.add_subplot(121, projection='3d')
-# ax.plot_surface(theta0_vals, theta1_vals, J_vals, cmap='viridis')
-# plt.xlabel('theta0')
-# plt.ylabel('theta1')
-# plt.title('Surface')
+# surface plot
+fig = plt.figure(figsize=(12, 5))
+ax = fig.add_subplot(121, projection='3d')
+ax.plot_surface(theta0_vals, theta1_vals, J_vals, cmap='viridis')
+plt.xlabel('theta0')
+plt.ylabel('theta1')
+plt.title('Surface')
 
-# # contour plot
-# # Plot J_vals as 15 contours spaced logarithmically between 0.01 and 100
-# ax = plt.subplot(122)
-# plt.contour(theta0_vals, theta1_vals, J_vals, linewidths=2, cmap='viridis', levels=np.logspace(-2, 3, 20))
-# plt.xlabel('theta0')
-# plt.ylabel('theta1')
-# plt.plot(theta[0], theta[1], 'ro', ms=10, lw=2)
-# plt.title('Contour, showing minimum')
-
+# contour plot
+# Plot J_vals as 15 contours spaced logarithmically between 0.01 and 100
+ax = plt.subplot(122)
+plt.contour(theta0_vals, theta1_vals, J_vals, linewidths=2, cmap='viridis', levels=np.logspace(-2, 3, 20))
+plt.xlabel('theta0')
+plt.ylabel('theta1')
+plt.plot(theta[0], theta[1], 'ro', ms=10, lw=2)
+plt.title('Contour, showing minimum')
